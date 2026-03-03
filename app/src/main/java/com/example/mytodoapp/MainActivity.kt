@@ -94,7 +94,7 @@ fun TodoAppScreen() {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
             title = { Text("Hepsini Sil?") },
-            text = { Text("Tüm listeyi temizlemek istediğinizden emin misiniz?") },
+            text = { Text("Tüm listeyi silmek istediğinizden emin misiniz?") },
             confirmButton = {
                 Button(
                     onClick = {
@@ -102,7 +102,7 @@ fun TodoAppScreen() {
                         showDeleteDialog = false
                         inputText = ""
                         isEditMode = false
-                        showMsg("Tüm liste temizlendi")
+                        showMsg("Tüm liste silindi.")
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Magenta)
                 ) { Text("Evet, Sil") }
@@ -177,7 +177,7 @@ fun TodoAppScreen() {
             ) {
                 Icon(if (isEditMode) Icons.Default.Edit else Icons.Default.Add, null)
                 Spacer(Modifier.width(8.dp))
-                Text(if (isEditMode) "UPDATE ITEM" else "ADD ITEM")
+                Text(if (isEditMode) "ÖĞE DÜZELT" else "Öğe EKLE")
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -197,7 +197,7 @@ fun TodoAppScreen() {
                     OutlinedTextField(
                         value = filterText,
                         onValueChange = { filterText = it },
-                        placeholder = { Text("Filtrele...") },
+                        placeholder = { Text("Arama...") },
                         modifier = Modifier.weight(1f).height(52.dp),
                         textStyle = LocalTextStyle.current.copy(fontSize = 14.sp)
                     )
@@ -206,7 +206,7 @@ fun TodoAppScreen() {
                         onClick = { showDeleteDialog = true },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB00020)),
                         modifier = Modifier.height(52.dp)
-                    ) { Text("CLEAR") }
+                    ) { Text("HEPSİNİ SİL") }
                 }
 
                 Text("${itemList.size}/10 Item", modifier = Modifier.align(Alignment.Start).padding(vertical = 4.dp), fontSize = 12.sp, color = Color.Gray)
