@@ -168,9 +168,13 @@ fun TodoAppScreen() {
                 label = { Text(if (isEditMode) "Öğeyi Düzenle" else "Yeni Öğe Girin") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
-                    if (inputText.isNotEmpty()) {
-                        IconButton(onClick = { inputText = ""; isEditMode = false }) {
-                            Icon(Icons.Default.Clear, contentDescription = null)
+                    if (inputText.isNotEmpty() || isEditMode) { // Edit modundaysa her zaman göster
+                        IconButton(onClick = {
+                            inputText = ""
+                            isEditMode = false
+                            editingItemId = null // Edit modundan tamamen çıkış yap
+                        }) {
+                            Icon(Icons.Default.Clear, contentDescription = "İptal")
                         }
                     }
                 },
