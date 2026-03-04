@@ -1,6 +1,7 @@
 package com.example.mytodoapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -46,7 +47,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// --- KAYIT VE YÜKLEME FONKSİYONLARI ---
+// --- KAYIT, YÜKLEME VE PAYLAŞMA FONKSİYONLARI ---
 fun saveItems(context: Context, items: List<TodoItem>) {
     val sharedPreferences = context.getSharedPreferences("todo_prefs", Context.MODE_PRIVATE)
     val gson = Gson()
@@ -59,6 +60,23 @@ fun loadItems(context: Context): List<TodoItem> {
     val json = sharedPreferences.getString("item_list", null) ?: return emptyList()
     val type = object : TypeToken<List<TodoItem>>() {}.type
     return Gson().fromJson(json, type)
+}
+
+// Paylaşma Fonksiyonu
+fun shareList(context: Context, items: List<TodoItem>) {
+    if (items.isEmpty()) return
+
+    val listString = items.joinToString(separator = "\n") { "- ${it.name}" }
+    val shareText = "Alışveriş Listem:\n$listString"
+
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, shareText)
+        type = "text/plain"
+    }
+
+    val shareIntent = Intent.createChooser(sendIntent, "Listeyi şununla paylaş:")
+    context.startActivity(shareIntent)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -124,7 +142,23 @@ fun TodoAppScreen() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Alışveriş Listesi", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+            // Başlık ve Paylaş Butonu Row İçerisinde
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
+                Text("Alışveriş Listesi", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
+                    if (itemList.isNotEmpty()) {
+                        IconButton(onClick = { shareList(context, itemList) }) {
+                            Icon(Icons.Default.Share, contentDescription = "Paylaş", tint = Color(0xFF333333))
+                        }
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
             // Input Alanı
