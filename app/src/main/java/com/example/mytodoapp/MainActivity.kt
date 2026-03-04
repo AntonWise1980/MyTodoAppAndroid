@@ -124,14 +124,14 @@ fun TodoAppScreen() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("To Do App", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
-            Spacer(modifier = Modifier.height(20.dp))
+            Text("Alışveriş Listesi", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Input Alanı
             OutlinedTextField(
                 value = inputText,
                 onValueChange = { if (it.length <= 15) inputText = it },
-                label = { Text(if (isEditMode) "Öğeyi Düzenle" else "Yeni Öğe Ekle") },
+                label = { Text(if (isEditMode) "Öğeyi Düzenle" else "Yeni Öğe Girin") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     if (inputText.isNotEmpty()) {
